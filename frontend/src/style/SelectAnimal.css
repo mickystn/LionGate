@@ -1,4 +1,4 @@
- button {
+.btn-time{
     padding: 5px 10px;
     border: none;
     cursor: pointer;
@@ -7,14 +7,6 @@
     border-radius: 5px;
     margin-right: 0.5rem;
 }
-  
-  button.red {
-    background-color: red;
-  }
-  
-  button.blue {
-    background-color: blue;
-  }
 .SA_container{
     background-color: #f9f9f9;
     display: flex;
@@ -27,7 +19,6 @@
     max-width: 90rem;
     width: 100%;
     margin-top: 80px;
-   
     align-items: center;
     gap:10px;
 }

@@ -43,3 +43,36 @@ export const getAnimal = async()=>{
         return "something wrong!"
     }
 }
+export const getRound = async()=>{
+    try{
+        const res = await Axios.get(api+"/Show/getRound",{headers});
+        if(res.data.status=="ok"){
+            return res.data.message;
+        }
+        return res.data.status;
+    }catch(err){
+        return "something wrong!"
+    }
+}
+export const getSeat=async(room_id)=>{
+    try{
+        const res = await Axios.post(api+"/Show/getSeat",{room_id:room_id},{headers});
+        if(res.data.status=="ok"){
+            return res.data.message;
+        }
+        return res.data.status;
+    }catch(err){
+        return "something wrong!"
+    }
+}
+export const getBooking = async()=>{
+    try{
+        const res = await Axios.get(api+"/Show/getRound",{headers});
+        if(res.data.status=="ok"){
+            return res.data.message;
+        }
+        return res.data.status;
+    }catch(err){
+        return "something wrong!"
+    }
+}

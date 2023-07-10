@@ -2,35 +2,41 @@
 import Navbar from "../component/Navbar"
 import {useEffect, useState} from 'react'
 import '../style/SelectAnimal.css'
-import Seat from '../component/Seat'
+import { useNavigate } from "react-router-dom";
 import { SearchOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Typography from '@mui/material/Typography';
 
-import {getAnimal} from '../service/api'
+import {getAnimal,getRound} from '../service/api'
 
 export default function SelectAnimal(){
-
+    const navigate = useNavigate();
     const [animal,setAnimal]=useState()
     const [animalsearch,setAnimalsearch]=useState();
+
+    const [round,setRound]=useState();
+
     useEffect(()=>{
         getAnimal().then((res)=>{
-            console.log(res);
             setAnimal(res)
             setAnimalsearch(res)
         })
+        getRound().then((res)=>{
+            setRound(res)
+        })
     },[])
-
-
     function onChange(evt){
-        console.log(evt.target.value);
         let word = evt.target.value;
         setAnimalsearch(animal.filter((animal) => animal.animal_name.startsWith(word)));
     }
+
+    function onClickHandle(data){
+        navigate("/SelectSeat",{state:data})
+    }
+
     return (
         <div className="SA_container">
             <Navbar/>
@@ -38,23 +44,29 @@ export default function SelectAnimal(){
                 <h1 className="txt-title">Animal</h1>
                 <div className="SA_subcontent">
                     <Input  placeholder="Search"prefix={<SearchOutlined />} onChange={onChange} />
-                    {animalsearch?.map((val,index)=>{
+                    {animalsearch?.map((val1,index)=>{
                         return (
                             <Accordion key={index} style={{margin:0}}>
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />} >
-                                    <img src={val.animal_path} className="img-acc"></img>
+                                    <img src={val1.animal_path} className="img-acc"></img>
                                     <div className="acc-detail">
-                                        <h1 className="txt1-acc" >{val.animal_name}</h1>
+                                        <h1 className="txt1-acc" >{val1.animal_name}</h1>
                                         <div style={{display:'flex' ,gap:"10px"}}>
-                                            <h1 className="txt2-acc">{val.animal_type}</h1>
-                                            <h1 className="txt2-acc">{val.animal_species}</h1>
+                                            <h1 className="txt2-acc">{val1.animal_type}</h1>
+                                            <h1 className="txt2-acc">{val1.animal_species}</h1>
                                         </div>
                                     </div>
                                 </AccordionSummary>
-                                <AccordionDetails>
-                                    <button>10:00</button>
-                                    <button>11:00</button>
-                                    <button>12:00</button>
+                                <AccordionDetails style={{display:'flex'}}>
+                                    {round?.map((val2,index)=>{
+                                        if(val1.animal_name==val2.animal_name){
+                                            return (
+                                                <button className="btn-time" key={index} onClick={()=>{onClickHandle(val2)}}>
+                                                    {val2.start_time.slice(0,5)}
+                                                </button>
+                                            )
+                                        }
+                                    })}
                                 </AccordionDetails>
                             </Accordion>
                         )
