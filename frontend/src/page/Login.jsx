@@ -34,11 +34,15 @@ export default function Login(){
     const navigate = useNavigate();
 
     useEffect(()=>{
-        auth().then((res)=>{
-            if(res!='err'){
-                navigate('/SelectAnimal')
-            }
-        })
+        if(localStorage.getItem("User")){
+            auth().then((res)=>{
+                console.log(res);
+                if(res!='err'){
+                    navigate("/SelectAnimal")
+                }
+            })
+        }
+        
     })
 
 

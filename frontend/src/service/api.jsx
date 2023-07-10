@@ -19,12 +19,25 @@ export const login = async(data)=>{
 }
 export const auth = async()=>{
     try{
-        const headers = { 'Authorization': 'Bearer '+ localStorage.getItem("User")}; // 
-        const res = await Axios.post(api+"/User/auth",{},{headers});
+        const tokenData = localStorage.getItem("User")
+        const res = await Axios.post(api+"/User/auth",{tokenData:tokenData},{headers});
+        console.log(res);
         if(res.data.status=="ok"){
             return res.data.decoded;
         }
         localStorage.clear()
+        return res.data.status;
+    }catch(err){
+        return "something wrong!"
+    }
+}
+export const getAnimal = async()=>{
+    try{
+        const res = await Axios.get(api+"/Animal",{headers});
+        console.log(res.data);
+        if(res.data.status=="ok"){
+            return res.data.message;
+        }
         return res.data.status;
     }catch(err){
         return "something wrong!"

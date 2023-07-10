@@ -2,6 +2,7 @@ const db = require('../config/db')
 
 exports.getAnimal=(req, res) =>{
     try{
+        
         let sql = "SELECT * FROM `animal`";
         db.query(sql,(err,result)=>{
             if(err) return res.json({status:'error',message:err})

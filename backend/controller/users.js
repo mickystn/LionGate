@@ -47,7 +47,6 @@ exports.login=(req,res)=>{
         var password = req.body.password;
 
         let sql = "SELECT * FROM `users` WHERE `users_name`=?"
-        console.log("test");
         db.query(sql,[username],(err,result)=>{
             if(err){
                 res.json({status: 'error', message: err})
@@ -57,7 +56,6 @@ exports.login=(req,res)=>{
                 res.json({status:'error',message:'no user found'})
                 return
             }
-            console.log(result[0].users_password.length);
             bcrypt.compare(password, result[0].users_password).then(function(isLogin) {
                 if(isLogin){
                     var token = jwt.sign({id:result[0].users_id,username:result[0].users_name},secret_token,{expiresIn:'1h'})
@@ -73,7 +71,7 @@ exports.login=(req,res)=>{
 }
 exports.auth=(req,res)=>{
     try{
-        const token = req.headers.authorization.split(' ')[1];
+        const token = req.body.tokenData;
         var decoded = jwt.verify(token,secret_token)
         res.json({status:'ok',decoded})
     }catch(err){
