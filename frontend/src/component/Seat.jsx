@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { getSeat } from '../service/api';
 
+// eslint-disable-next-line react/prop-types
 function Seat({onRevdata}) {
     const {state}=useLocation();
     const [seats, setSeats] = useState([]);
@@ -14,8 +15,9 @@ function Seat({onRevdata}) {
         if(state==null){
             return navigate("/SelectAnimal")
         }
-        getSeat(state.room_id).then((res)=>{
-            const changeBool = res.map(obj=>({...obj,isReserved:obj.isReserved===1,isSelected:false}));
+        console.log(state);
+        getSeat(state.round_id).then((res)=>{
+            const changeBool = res.map(obj=>({...obj,isReserved:obj.isReserved===1,isSelected:false,price:state.price}));
             setSeats(changeBool) 
         })
     },[])
@@ -28,6 +30,7 @@ function Seat({onRevdata}) {
         }
         return seat;
         });
+        console.log(updatedSeats);
         onRevdata(updatedSeats)
         setSeats(updatedSeats);
     };

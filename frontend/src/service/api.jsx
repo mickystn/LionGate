@@ -22,9 +22,7 @@ export const auth = async()=>{
     try{
         const tokenData = localStorage.getItem("User")
         const res = await Axios.post(api+"/User/auth",{tokenData:tokenData},{headers});
-        console.log(res);
-        if(res.data.status=="ok"){
-            console.log(res.data.decoded);
+        if(res.data.status=="ok"){;
             return res.data.decoded;
         }
         localStorage.clear()
@@ -56,9 +54,9 @@ export const getRound = async()=>{
         return "something wrong!"
     }
 }
-export const getSeat=async(room_id)=>{
+export const getSeat=async(round_id)=>{
     try{
-        const res = await Axios.post(api+"/Show/getSeat",{room_id:room_id},{headers});
+        const res = await Axios.post(api+"/Show/getSeat",{round_id:round_id},{headers});
         if(res.data.status=="ok"){
             return res.data.message;
         }
@@ -67,9 +65,9 @@ export const getSeat=async(room_id)=>{
         return "something wrong!"
     }
 }
-export const getBooking = async()=>{
+export const getBooking = async(user_id)=>{
     try{
-        const res = await Axios.get(api+"/Show/getRound",{headers});
+        const res = await Axios.post(api+"/Show/getBooking",{user_id:user_id},{headers});
         if(res.data.status=="ok"){
             return res.data.message;
         }
@@ -93,6 +91,7 @@ export const updateSeat = async(data)=>{
 }
 export const booking = async(data)=>{
     try{
+        
         const res = await Axios.post(api+"/Show/booking",{data:data},{headers});
         if(res.data.status=="ok"){
             return res.data.message;

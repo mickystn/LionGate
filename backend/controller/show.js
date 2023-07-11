@@ -2,9 +2,10 @@ const db = require('../config/db')
 
 exports.getRound = (req,res)=>{
     try{
-        let sql=`SELECT rooms.price,animal.animal_name,rounds.start_time,rooms.room_id,rooms.capacity,rounds.round_id FROM rounds INNER JOIN rooms ON 
-                rounds.room_id = rooms.room_id INNER JOIN animal ON rounds.animal_id = animal.animal_id;`
-        
+        // let sql=`SELECT rooms.price,animal.animal_name,rounds.start_time,rooms.room_id,rooms.capacity,rounds.round_id FROM rounds INNER JOIN rooms ON 
+        //         rounds.room_id = rooms.room_id INNER JOIN animal ON rounds.animal_id = animal.animal_id;`
+        let sql="SELECT * FROM rounds INNER JOIN animal ON rounds.animal_id=animal.animal_id;"
+
         db.query(sql,(err,result)=>{
             if(err) return res.json({status:'error',message:err})
             res.json({status:'ok',message:result});
@@ -16,9 +17,9 @@ exports.getRound = (req,res)=>{
 }
 exports.getSeat=(req,res)=>{
     try{
-        let room_id = req.body.room_id;
-        let sql="SELECT * FROM `seats` INNER JOIN rooms ON seats.room_id=rooms.room_id WHERE seats.room_id=? ORDER BY seat_name ASC;"
-        db.query(sql,[room_id],(err,result)=>{
+        let round_id = req.body.round_id;
+        let sql=`SELECT * FROM seats WHERE round_id=?`
+        db.query(sql,[round_id],(err,result)=>{
             if(err) return res.json({status:'error',message:err})
             res.json({status:'ok',message:result});
         })
@@ -49,4 +50,16 @@ exports.booking = (req,res)=>{
     }catch(err){
         res.json({status:'err',msg:err.message})
     }
-} 
+}
+exports.getBooking = (req,res)=>{
+    try{
+        let user_id = req.body.user_id;
+        let sql = "SELECT * FROM `booking` WHERE `user_id` =?"
+        db.query(sql,[user_id],(err,result)=>{
+            if(err) return res.json({status:'error',message:err})
+            res.json({status:'ok',message:result});
+        })
+    }catch(err){
+        res.json({status:'err',msg:err.message})
+    }
+}

@@ -54,3 +54,31 @@
         font-size: 0.8rem;
     }
 }
+@media (min-width: 641px) and (max-width:1007px) {
+    .SA_content{
+        max-width: 70%;
+    }
+    .txt-title{
+        font-size:1.5rem;
+    }
+    .txt1-acc{
+        font-size: 1.4rem;
+    }
+    .txt2-acc{
+        font-size: 1.1rem;
+    }
+}
+@media (min-width:1008px){
+    .SA_content{
+        max-width: 50%;
+    }
+    .txt-title{
+        font-size:1.5rem;
+    }
+    .txt1-acc{
+        font-size: 1.4rem;
+    }
+    .txt2-acc{
+        font-size: 1.1rem;
+    }
+}

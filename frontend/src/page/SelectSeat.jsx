@@ -36,7 +36,7 @@ export default function SelectSeat(){
                 setUID(res.id)
             })
             if(state==null){
-                navigate("/SelectAnimal")
+                return navigate("/SelectAnimal")
             }
             setPps(state.price)
             return
@@ -56,12 +56,10 @@ export default function SelectSeat(){
             }
         });
         setPrice(tempSum)
-        console.log(tempId);
         setSeatid(tempId)
         setSelect(tempString.join(', '))
     } 
     function onClick(){
-        console.log(seatid);
         updateSeat(seatid).then((resUpdate)=>{
             if(resUpdate=="err") return
 
@@ -89,31 +87,34 @@ export default function SelectSeat(){
         setOpen(false);
     };
     return (
-        <div className="ss_container">
+        <div>
             <Navbar/>
-            <div style={{marginTop:'4rem'}}><Seat onRevdata={onRevdata}/></div>
-            <div className="ss_content">
-                <div className="ss_pps">
-                    <h1 className="ss_pps_txt">Price per seat : {pps}</h1>
-                </div>
-                <div className="ss_detail1">
-                    <h1 className="ss_txt_detail1">Select seats</h1>
-                    <h1 className="ss_txt_detail1">Total</h1>
-                </div>
-                <div className="ss_detail1">
-                    <h1 className="ss_txt_detail1">{seatselect}</h1>
-                    <h1 className="ss_txt_detail1">{price}</h1>
-                </div>
-                <button className="ss_btn" onClick={()=>{onClick()}}>Submit</button>
-                <Snackbar open={open} anchorOrigin={{horizontal: 'center',vertical: 'top'}} autoHideDuration={3000} onClose={handleClose}>
-                    <Alert onClose={handleClose}  severity="success" sx={{ width: '100%' ,color:'#FFF' }}>
-                        {msg}
-                    </Alert>
-                </Snackbar>
-            </div>
-            
-        </div>
         
+            <div className="ss_container">
+        
+                <div className="seat_show"><Seat onRevdata={onRevdata}/></div>
+                <div className="ss_content">
+                    <div className="ss_pps">
+                        <h1 className="ss_pps_txt">Price per seat : {pps}</h1>
+                    </div>
+                    <div className="ss_detail1">
+                        <h1 className="ss_txt_detail1">Select seats</h1>
+                        <h1 className="ss_txt_detail1">Total</h1>
+                    </div>
+                    <div className="ss_detail1">
+                        <h1 className="ss_txt_detail1">{seatselect}</h1>
+                        <h1 className="ss_txt_detail1">{price}</h1>
+                    </div>
+                    <button className="ss_btn" onClick={()=>{onClick()}}>Submit</button>
+                    <Snackbar open={open} anchorOrigin={{horizontal: 'center',vertical: 'top'}} autoHideDuration={3000} onClose={handleClose}>
+                        <Alert onClose={handleClose}  severity="success" sx={{ width: '100%' ,color:'#FFF' }}>
+                            {msg}
+                        </Alert>
+                    </Snackbar>
+                </div>
+                
+            </div>
+        </div>
         
     )
 }

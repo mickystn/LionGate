@@ -6,6 +6,7 @@ const show = require('../controller/show')
 
 router.get("/getRound",show.getRound)
 
+router.post("/getBooking",show.getBooking)
 router.post("/getSeat",show.getSeat)
 router.post("/booking",show.booking)
 

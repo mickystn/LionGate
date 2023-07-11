@@ -1,0 +1,21 @@
+
+@media (max-width:640px) {
+    .table{
+        margin-top:5rem;
+    }
+}
+@media (min-width: 641px) and (max-width:1007px) {
+    .table{
+        margin-top:5rem;
+    }
+}
+@media (min-width:1008px) {
+    .table{
+        margin-top:5rem;
+    }
+    .history_content{
+        margin:0 auto;
+
+        width:60%;
+    }
+}
