@@ -10,7 +10,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import {getAnimal,getRound} from '../service/api'
+import {getAnimal,getRound,auth} from '../service/api'
 
 export default function SelectAnimal(){
     const navigate = useNavigate();
@@ -20,13 +20,23 @@ export default function SelectAnimal(){
     const [round,setRound]=useState();
 
     useEffect(()=>{
-        getAnimal().then((res)=>{
-            setAnimal(res)
-            setAnimalsearch(res)
-        })
-        getRound().then((res)=>{
-            setRound(res)
-        })
+        if(localStorage.getItem("User")){
+            auth().then((res)=>{
+                if(res!='err'){
+                    return navigate("/SelectAnimal")
+                }
+            })
+            getAnimal().then((res)=>{
+                setAnimal(res)
+                setAnimalsearch(res)
+            })
+            getRound().then((res)=>{
+                setRound(res)
+                console.log(res);
+            })
+            return
+        }
+        return navigate("/Login")
     },[])
     function onChange(evt){
         let word = evt.target.value;

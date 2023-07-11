@@ -1,7 +1,7 @@
 
 import { MailOutlined ,LockOutlined,UserOutlined} from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
-import { useState ,forwardRef} from 'react';
+import { useState ,forwardRef, useEffect} from 'react';
 import { Form, Input } from 'antd';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -9,6 +9,7 @@ import Navbar from '../component/Navbar';
 
 import img from '../assets/login.png'
 import '../style/Register.css'
+import { auth } from '../service/api';
 
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} {...props} />;
@@ -40,6 +41,18 @@ export default function Register(){
     const navigate = useNavigate();
 
     const [msg,setMsg]=useState("test");
+
+    useEffect(()=>{
+        if(localStorage.getItem("User")){
+            auth().then((res)=>{
+                console.log(res);
+                if(res!='err'){
+                    return navigate("/SelectAnimal")
+                }
+            })
+        }
+    })
+
 
     function onFinish(values){
         const data = {email: values.Email, password: values.Password,name:values.Name}

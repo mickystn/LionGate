@@ -1,0 +1,39 @@
+.ss_container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f9f9f9;
+}
+.ss_content{
+    background-color: white;
+    padding: 2rem;
+    margin-top: 1rem;
+    height: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+.ss_detail1{
+    display: flex;
+    justify-content:space-between;
+}
+.ss_txt_detail1{
+    font-size:1.3rem;
+}
+.ss_pps_txt{
+    font-size:1.1rem;
+}
+.ss_pps{
+    margin-bottom:1rem;
+}
+.ss_btn{
+    width:100%;
+    padding:10px 20px;
+    margin-top:1rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 0 1px rgba(0,0,0,.1);
+}
+.ss_btn:hover{
+    scale: 1.05;
+    transition: 0.44s;
+}

@@ -5,35 +5,30 @@ import { useNavigate } from "react-router-dom";
 
 import { getSeat } from '../service/api';
 
-function Seat() {
+function Seat({onRevdata}) {
     const {state}=useLocation();
     const [seats, setSeats] = useState([]);
+
     const navigate = useNavigate();
     useEffect(()=>{
         if(state==null){
             return navigate("/SelectAnimal")
         }
-        console.log(state.room_id);
         getSeat(state.room_id).then((res)=>{
-            console.log(res);
-            setSeats(res) 
+            const changeBool = res.map(obj=>({...obj,isReserved:obj.isReserved===1,isSelected:false}));
+            setSeats(changeBool) 
         })
-        // console.log(state);
-        // const seatCount =[]
-        // for(let i=1;i<=state.capacity;i++){
-        //     seatCount.push({id:i, isReserved:false, isSelected:false})
-        // }
-        // setSeats(seatCount)
     },[])
-    useEffect(()=>{
-    })
     const handleSeatClick = (seatId) => {
         const updatedSeats = seats.map((seat) => {
-        if (seat.id === seatId) {
-            return { ...seat, isSelected: !seat.isSelected };
+        if (seat.seat_id === seatId) {
+            if(seat.isReserved==0){
+                return { ...seat, isSelected: !seat.isSelected };
+            }
         }
         return seat;
         });
+        onRevdata(updatedSeats)
         setSeats(updatedSeats);
     };
 
@@ -41,16 +36,17 @@ function Seat() {
     <div>
       <div className="seat-container">
         <div className="seat-content">
-            {seats?.map((seat) => (
-            <button  key={seat.seat_id} className={seat.isSelected ? 'reserved' : 'available'} 
-                onClick={() => handleSeatClick(seat.id)}
-                style={{ 
-                        backgroundColor: seat.isSelected ? 'red' : 'green',
-                        color: seat.isSelected ? 'white' : 'black',
-                    }}
-                >
-                    {seat.seat_name}
-            </button>
+            {seats?.map((seat) => ( seat.isReserved==0?
+                <button key={seat.seat_id} className="btn-seat"
+                    onClick={() => handleSeatClick(seat.seat_id)}
+                    style={{ 
+                            backgroundColor: seat.isSelected ? 'red' : 'green' ,
+                            color: seat.isSelected ? 'white' : 'black',
+                        }}>
+                        {seat.seat_name}
+                </button>
+                :
+                <button key={seat.seat_id} className="btn-seat" style={{backgroundColor:'gray',color:'black'}}>{seat.seat_name}</button> 
             ))}
         </div>
       </div>

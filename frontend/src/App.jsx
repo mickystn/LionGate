@@ -9,6 +9,9 @@ import Login from './page/Login'
 import Register from './page/Register'
 import SelectAnimal from './page/SelectAnimal'
 import SelectSeat from './page/SelectSeat';
+import History from './page/History'
+
+
 function App() {
   return (
     <div>
@@ -19,6 +22,7 @@ function App() {
         <Route path="/Register" element={<Register/>}/>
         <Route path="/SelectAnimal" element={<SelectAnimal/>}/>
         <Route path="/SelectSeat" element={<SelectSeat/>}/>
+        <Route path="/History" element={<History/>}/>
       </Routes>
     </div>
   )

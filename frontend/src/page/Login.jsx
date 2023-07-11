@@ -36,13 +36,12 @@ export default function Login(){
     useEffect(()=>{
         if(localStorage.getItem("User")){
             auth().then((res)=>{
-                console.log(res);
                 if(res!='err'){
-                    navigate("/SelectAnimal")
+                    console.log(res);
+                    return navigate("/SelectAnimal")
                 }
             })
         }
-        
     })
 
 
@@ -50,6 +49,7 @@ export default function Login(){
         const data = {username: values.Username, password: values.Password}
         console.log(data);
         login(data).then((res)=>{
+            
             if(res=="login success"){
                 navigate('/SelectAnimal')
             }

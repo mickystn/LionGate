@@ -5,6 +5,7 @@ const headers = { 'Authorization': 'Bearer liongate'}; //
 export const login = async(data)=>{
     try{
         const res = await Axios.post(api+"/User/login",data,{headers});
+        console.log(res);
         if(res.data.token){
             localStorage.setItem("User", res.data.token);
             return res.data.message;
@@ -23,6 +24,7 @@ export const auth = async()=>{
         const res = await Axios.post(api+"/User/auth",{tokenData:tokenData},{headers});
         console.log(res);
         if(res.data.status=="ok"){
+            console.log(res.data.decoded);
             return res.data.decoded;
         }
         localStorage.clear()
@@ -74,5 +76,29 @@ export const getBooking = async()=>{
         return res.data.status;
     }catch(err){
         return "something wrong!"
+    }
+}
+export const updateSeat = async(data)=>{
+    try{
+        console.log(data);
+        const res = await Axios.put(api+"/Show/updateSeat",{data:data},{headers});
+        console.log(res);
+        if(res.data.status=="ok"){
+            return res.data.message;
+        }
+        return res.data.status;
+    }catch(err){
+        return "something wrong"
+    }
+}
+export const booking = async(data)=>{
+    try{
+        const res = await Axios.post(api+"/Show/booking",{data:data},{headers});
+        if(res.data.status=="ok"){
+            return res.data.message;
+        }
+        return res.data.status;
+    }catch(err){
+        return "something wrong"
     }
 }
