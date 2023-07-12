@@ -15,22 +15,21 @@ function Seat({onRevdata}) {
         if(state==null){
             return navigate("/SelectAnimal")
         }
-        console.log(state);
-        getSeat(state.round_id).then((res)=>{
+        getSeat(state.Round_ID).then((res)=>{
+            console.log(res);
             const changeBool = res.map(obj=>({...obj,isReserved:obj.isReserved===1,isSelected:false,price:state.price}));
             setSeats(changeBool) 
         })
     },[])
     const handleSeatClick = (seatId) => {
         const updatedSeats = seats.map((seat) => {
-        if (seat.seat_id === seatId) {
+        if (seat.Seat_ID === seatId) {
             if(seat.isReserved==0){
                 return { ...seat, isSelected: !seat.isSelected };
             }
         }
         return seat;
         });
-        console.log(updatedSeats);
         onRevdata(updatedSeats)
         setSeats(updatedSeats);
     };
@@ -40,16 +39,16 @@ function Seat({onRevdata}) {
       <div className="seat-container">
         <div className="seat-content">
             {seats?.map((seat) => ( seat.isReserved==0?
-                <button key={seat.seat_id} className="btn-seat"
-                    onClick={() => handleSeatClick(seat.seat_id)}
+                <button key={seat.Seat_ID} className="btn-seat"
+                    onClick={() => handleSeatClick(seat.Seat_ID)}
                     style={{ 
                             backgroundColor: seat.isSelected ? 'red' : 'green' ,
                             color: seat.isSelected ? 'white' : 'black',
                         }}>
-                        {seat.seat_name}
+                        {seat.Seat_Name}
                 </button>
                 :
-                <button key={seat.seat_id} className="btn-seat" style={{backgroundColor:'gray',color:'black'}}>{seat.seat_name}</button> 
+                <button key={seat.Seat_ID} className="btn-seat" style={{backgroundColor:'gray',color:'black'}}>{seat.Seat_Name}</button> 
             ))}
         </div>
       </div>

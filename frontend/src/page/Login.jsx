@@ -3,8 +3,7 @@ import Navbar from '../component/Navbar'
 import '../style/Login.css'
 
 import img from '../assets/login.png'
-
-import { MailOutlined ,LockOutlined} from '@ant-design/icons';
+import { UserOutlined ,LockOutlined} from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { useState,forwardRef,useEffect} from 'react';
 import { Form, Input } from 'antd';
@@ -37,8 +36,10 @@ export default function Login(){
         if(localStorage.getItem("User")){
             auth().then((res)=>{
                 if(res!='err'){
-                    console.log(res);
-                    return navigate("/SelectAnimal")
+                    if(res.role==0){
+                        return navigate("/SelectAnimal")
+                    }
+                    return navigate("/Editround")
                 }
             })
         }
@@ -47,11 +48,15 @@ export default function Login(){
 
     function onFinish(values){
         const data = {username: values.Username, password: values.Password}
-        console.log(data);
         login(data).then((res)=>{
-            
-            if(res=="login success"){
-                navigate('/SelectAnimal')
+            console.log(res.role);
+            if(res.message=="login success"){
+                if(res.role==0){
+                    navigate('/SelectAnimal')
+                }
+                else{
+                    navigate('/Editround')
+                }
             }
         })
     }
@@ -73,7 +78,7 @@ export default function Login(){
                 <Form onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off" >
                     <div className="input-group">
                         <Form.Item name="Username" rules={ruleEmail}>
-                            <Input size="default " placeholder="Username"  bordered={false} prefix={<MailOutlined />} className='inp'/>
+                            <Input size="default " placeholder="Username"  bordered={false} prefix={<UserOutlined />} className='inp'/>
                         </Form.Item>
                         <Form.Item name="Password" rules={rulePassword}>
                             <Input.Password size="default " placeholder="Password" bordered={false} prefix={<LockOutlined />} className='inp'/>

@@ -1,0 +1,23 @@
+.Editround_container{
+    background-color: #f9f9f9;
+    display: flex;
+    height: 100vh;
+}
+.Editround_content{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 80rem;
+    width: 100%;
+    margin-top: 80px;
+    align-items: center;
+    gap:10px;
+}
+.Editround_title{
+    display: flex;
+    flex-direction:row;
+    gap: 20px;
+}
+.txt_edit{
+    font-size: 1rem;
+}

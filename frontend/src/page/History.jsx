@@ -3,26 +3,24 @@ import { useEffect,useState } from "react"
 import { getBooking,auth } from "../service/api"
 import { useNavigate } from "react-router-dom";
 import { Table } from 'antd';
-import Navbar from "../component/Navbar";
-
+import Navbaruser from "../component/Navbaruser";
 import '../style/History.css'
-
 
 const columns = [
     {
       title: 'Round ID',
-      dataIndex: 'round_id',
-      key: 'round_id',
+      dataIndex: 'Round_ID',
+      key: 'Round_ID',
     },
     {
       title: 'Seat',
-      dataIndex: 'seat',
-      key: 'seat',
+      dataIndex: 'Seat_select',
+      key: 'Seat_select',
     },
     {
       title: 'Total Price',
-      dataIndex: 'total_price',
-      key: 'total_price',
+      dataIndex: 'Total_price',
+      key: 'Total_price',
     },
 ];
 
@@ -30,11 +28,13 @@ export default function History(){
     const navigate = useNavigate();
     const [data,setData]=useState();
     useEffect(()=>{
-
         if(localStorage.getItem("User")){
             auth().then((res)=>{
                 if(res=='err'){
                     return navigate("/Login")
+                }
+                if(res.role==1){
+                    return navigate("/Editround")
                 }
                 getBooking(res.id).then((resGetbooking)=>{
                     setData(resGetbooking)
@@ -47,7 +47,7 @@ export default function History(){
 
     return (
         <div className="history_contianer">
-            <Navbar/>
+            <Navbaruser/>
             <div className="history_content">
                 <Table columns={columns} dataSource={data} className="table"/>  
             </div>

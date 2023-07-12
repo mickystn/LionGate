@@ -1,5 +1,5 @@
 
-import { MailOutlined ,LockOutlined,UserOutlined} from '@ant-design/icons';
+import { LockOutlined,UserOutlined} from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { useState ,forwardRef, useEffect} from 'react';
 import { Form, Input } from 'antd';
@@ -9,7 +9,7 @@ import Navbar from '../component/Navbar';
 
 import img from '../assets/login.png'
 import '../style/Register.css'
-import { auth } from '../service/api';
+import { auth,register } from '../service/api';
 
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} {...props} />;
@@ -26,16 +26,6 @@ const ruleName= [
         message: 'Please input your name!',
     },
 ]
-const ruleEmail = [
-    {
-        required: true,
-        message: 'Please input your email!',
-    },
-    {
-        type: 'email',
-        message: 'Please check your email'
-    }
-]
 export default function Register(){
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -47,16 +37,32 @@ export default function Register(){
             auth().then((res)=>{
                 console.log(res);
                 if(res!='err'){
-                    return navigate("/SelectAnimal")
+                    if(res.role==0){
+                        return navigate("/SelectAnimal")
+                    }
+                    return navigate("/Editround")
                 }
             })
         }
     })
-
-
     function onFinish(values){
-        const data = {email: values.Email, password: values.Password,name:values.Name}
-        console.log(data);
+        if(!values.Name || !values.Password){
+            setMsg("โปรดใส่ข้อมูลให้ครบ")
+            setOpen(true)
+        }
+        const data = {password: values.Password,username:values.Name}
+        register(data).then((res)=>{
+            console.log(res);
+            if(res=="create complete"){
+                navigate('/Login')
+            }else if(res=="cannot use this username"){
+                setMsg("ไม่สามารถใช้ Username นี้ได้")
+                setOpen(true)
+            }else{
+                setMsg("โปรดลองอีกครั้งภายหลัง")
+                setOpen(true)
+            }
+        })
     }
     const onFinishFailed = () => {
         setOpen(true)
@@ -75,9 +81,6 @@ export default function Register(){
                 <h1 className="Reg-title">Register</h1>
                 <Form onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off" >
                 <div className="input-group">
-                    <Form.Item name="Email" rules={ruleEmail}>
-                        <Input size="default " placeholder="Email"  bordered={false} prefix={<MailOutlined />} className='inp'/>
-                    </Form.Item>
                     <Form.Item name="Name" rules={ruleName}>
                         <Input size="default " placeholder="Name"  bordered={false} prefix={<UserOutlined />} className='inp'/>
                     </Form.Item>

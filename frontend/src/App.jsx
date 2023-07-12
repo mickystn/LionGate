@@ -10,7 +10,8 @@ import Register from './page/Register'
 import SelectAnimal from './page/SelectAnimal'
 import SelectSeat from './page/SelectSeat';
 import History from './page/History'
-
+import Editround from './page/Editround'
+import Editanimal from './page/Editanimal';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
         <Route path="/SelectAnimal" element={<SelectAnimal/>}/>
         <Route path="/SelectSeat" element={<SelectSeat/>}/>
         <Route path="/History" element={<History/>}/>
+        <Route path="/Editround" element={<Editround/>}/>
+        <Route path="/Editanimal" element={<Editanimal/>}/>
       </Routes>
     </div>
   )

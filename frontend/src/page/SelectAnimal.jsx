@@ -1,5 +1,5 @@
 
-import Navbar from "../component/Navbar"
+import Navbaruser from "../component/Navbaruser"
 import {useEffect, useState} from 'react'
 import '../style/SelectAnimal.css'
 import { useNavigate } from "react-router-dom";
@@ -23,20 +23,23 @@ export default function SelectAnimal(){
         if(localStorage.getItem("User")){
             auth().then((res)=>{
                 if(res!='err'){
-                    return navigate("/SelectAnimal")
+                    if(res.role==1){
+                        return navigate("/Editround")
+                    }
+                
                 }
             })
+            
             getAnimal().then((res)=>{
                 setAnimal(res)
                 setAnimalsearch(res)
             })
             getRound().then((res)=>{
                 setRound(res)
-                console.log(res);
             })
-            return
+        }else{
+            return navigate("/Login")
         }
-        return navigate("/Login")
     },[])
     function onChange(evt){
         let word = evt.target.value;
@@ -44,12 +47,13 @@ export default function SelectAnimal(){
     }
 
     function onClickHandle(data){
+        console.log(data);
         navigate("/SelectSeat",{state:data})
     }
 
     return (
         <div className="SA_container">
-            <Navbar/>
+            <Navbaruser/>
             <div className="SA_content">
                 <h1 className="txt-title">Animal</h1>
                 <div className="SA_subcontent">
@@ -58,21 +62,21 @@ export default function SelectAnimal(){
                         return (
                             <Accordion key={index} style={{margin:0}}>
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />} >
-                                    <img src={val1.animal_path} className="img-acc"></img>
+                                    <img src={val1.Animal_Path} className="img-acc"></img>
                                     <div className="acc-detail">
-                                        <h1 className="txt1-acc" >{val1.animal_name}</h1>
+                                        <h1 className="txt1-acc" >{val1.Animal_Name}</h1>
                                         <div style={{display:'flex' ,gap:"10px"}}>
-                                            <h1 className="txt2-acc">{val1.animal_type}</h1>
-                                            <h1 className="txt2-acc">{val1.animal_species}</h1>
+                                            <h1 className="txt2-acc">{val1.Animal_Type}</h1>
+                                            <h1 className="txt2-acc">{val1.Animal_Species}</h1>
                                         </div>
                                     </div>
                                 </AccordionSummary>
                                 <AccordionDetails style={{display:'flex'}}>
                                     {round?.map((val2,index)=>{
-                                        if(val1.animal_name==val2.animal_name){
+                                        if(val1.Animal_ID==val2.Animal_ID){
                                             return (
                                                 <button className="btn-time" key={index} onClick={()=>{onClickHandle(val2)}}>
-                                                    {val2.start_time.slice(0,5)}
+                                                    {val2.Showtime.slice(0,5)}
                                                 </button>
                                             )
                                         }

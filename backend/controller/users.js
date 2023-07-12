@@ -5,15 +5,14 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const saltRounds = 10;
 
+
 exports.register =(req,res)=>{
     try{
         let username = req.body.username;
         let password = req.body.password;
 
         let sqlInsert = "INSERT INTO `users`( `users_name`, `users_password`, `role`) VALUES (?,?,?)";
-
         let sqlSearch = "SELECT * FROM users WHERE users_name = ? "
-
         db.query(sqlSearch,[username],(err,result)=>{
             if(result.length!=0) return res.json({status:'error',message:'cannot use this username'})
             if(err) return res.json({status:'error',message:err})
@@ -58,8 +57,8 @@ exports.login=(req,res)=>{
             }
             bcrypt.compare(password, result[0].users_password).then(function(isLogin) {
                 if(isLogin){
-                    var token = jwt.sign({id:result[0].users_id,username:result[0].users_name},secret_token,{expiresIn:'1h'})
-                    res.json({status:'ok',message:'login success',token})
+                    var token = jwt.sign({id:result[0].user_id,role:result[0].role,username:result[0].users_name},secret_token,{expiresIn:'1h'})
+                    res.json({status:'ok',message:'login success',token,role:result[0].role})
                 }else{
                     res.json({status:'err',message:'login failed'})
                 }

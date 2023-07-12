@@ -1,11 +1,10 @@
 import { useLocation } from "react-router-dom"
-import Navbar from '../component/Navbar'
+import Navbaruser from '../component/Navbaruser'
 import Seat from '../component/Seat'
 import { useEffect,useState,forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {updateSeat,auth,booking} from '../service/api'
 import '../style/SelectSeat.css'
-
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 const Alert = forwardRef(function Alert(props, ref) {
@@ -18,8 +17,9 @@ export default function SelectSeat(){
     const navigate = useNavigate();
 
     const [open, setOpen] = useState(false);
-    const [msg,setMsg] = useState('test');
-
+    const [open2, setOpen2] = useState(false);
+    const [msg,setMsg] = useState('');
+    const [msg2,] = useState('Please select seat');
     const [seatselect,setSelect] = useState('');
     const [seatid,setSeatid] = useState('');
     const [price,setPrice]=useState('');
@@ -33,15 +33,20 @@ export default function SelectSeat(){
                 if(res=='err'){
                     return navigate("/Login")
                 }
+                if(res.role==1){
+                    return navigate("/Editround")
+                }
+                console.log(res);
                 setUID(res.id)
             })
             if(state==null){
                 return navigate("/SelectAnimal")
             }
+            console.log(state);
             setPps(state.price)
-            return
+        }else{
+            return navigate("/Login")
         }
-        return navigate("/Login")
     },[])
     const onRevdata=(data)=>{
         const tempString =[]
@@ -50,48 +55,53 @@ export default function SelectSeat(){
         
         data.map(obj => {
             if(obj.isSelected){
-                tempString.push(obj.seat_name)
-                tempId.push(obj.seat_id)
+                tempString.push(obj.Seat_Name)
+                tempId.push(obj.Seat_ID)
                 tempSum+=obj.price
             }
         });
+        
         setPrice(tempSum)
         setSeatid(tempId)
         setSelect(tempString.join(', '))
     } 
     function onClick(){
-        updateSeat(seatid).then((resUpdate)=>{
-            if(resUpdate=="err") return
+        if(seatselect){
+            updateSeat(seatid).then((resUpdate)=>{
+                if(resUpdate=="err") return
 
-            const bookingData = {
-                seatselect:seatselect,
-                price:price,
-                user_id:userid,
-                round_id:state.round_id
-            }
-            booking(bookingData).then((resBooking)=>{
-                if(resBooking=="err") return 
-                setMsg("Booking complete")
-                setOpen(true)
-                setTimeout(()=>{
-                    navigate("/History")
-                },5000)
+                const bookingData = {
+                    seatselect:seatselect,
+                    price:price,
+                    user_id:userid,
+                    round_id:state.Round_ID
+                }
+
+                booking(bookingData).then((resBooking)=>{
+                    if(resBooking=="err") return 
+                    setMsg("Booking complete")
+                    setOpen(true)
+                    setTimeout(()=>{
+                        navigate("/History")
+                    },3000)
+                })
+                
             })
-            
-        })
+        }else{
+            setOpen2(true);
+        }
     }
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
         } 
+        setOpen2(false)
         setOpen(false);
     };
     return (
         <div>
-            <Navbar/>
-        
+            <Navbaruser/>
             <div className="ss_container">
-        
                 <div className="seat_show"><Seat onRevdata={onRevdata}/></div>
                 <div className="ss_content">
                     <div className="ss_pps">
@@ -109,6 +119,11 @@ export default function SelectSeat(){
                     <Snackbar open={open} anchorOrigin={{horizontal: 'center',vertical: 'top'}} autoHideDuration={3000} onClose={handleClose}>
                         <Alert onClose={handleClose}  severity="success" sx={{ width: '100%' ,color:'#FFF' }}>
                             {msg}
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar open={open2} anchorOrigin={{horizontal: 'center',vertical: 'top'}} autoHideDuration={3000} onClose={handleClose}>
+                        <Alert onClose={handleClose}  severity="error" sx={{ width: '100%' ,color:'#FFF' }}>
+                            {msg2}
                         </Alert>
                     </Snackbar>
                 </div>
