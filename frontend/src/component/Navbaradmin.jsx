@@ -14,8 +14,8 @@ export default function Navbaradmin(){
                 <div className='menu-button'></div>
             </label>
             <ul className="menu">
-                <li><a href='/EditRound'>Round</a></li>
-                <li><a href='/EditAnimal'>Animal</a></li>
+                <li><a href='/Editround'>Round</a></li>
+                <li><a href='/Editanimal'>Animal</a></li>
                 <li><button className="button" onClick={()=>{
                     navigate('/Login')
                     localStorage.clear('User')

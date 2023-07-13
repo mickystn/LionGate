@@ -109,9 +109,11 @@ export default function Editround(){
                 }
             })
             getRoundedit().then((res)=>{
+                if(res=="err" || res=="something wrong") return
                 setRound(res)
             })
             getRoom().then((res)=>{
+                if(res=="err" || res=="something wrong") return
                 setRoom(res)
             })
         }else{

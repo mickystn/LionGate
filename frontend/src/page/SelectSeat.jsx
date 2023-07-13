@@ -30,19 +30,15 @@ export default function SelectSeat(){
     useEffect(()=>{
         if(localStorage.getItem("User")){
             auth().then((res)=>{
-                if(res=='err'){
-                    return navigate("/Login")
-                }
+                if(res=="err" || res=="something wrong") return navigate("/Login")
                 if(res.role==1){
                     return navigate("/Editround")
                 }
-                console.log(res);
                 setUID(res.id)
             })
             if(state==null){
                 return navigate("/SelectAnimal")
             }
-            console.log(state);
             setPps(state.price)
         }else{
             return navigate("/Login")

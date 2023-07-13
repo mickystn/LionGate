@@ -38,7 +38,6 @@ export const auth = async()=>{
     try{
         const tokenData = localStorage.getItem("User")
         const res = await Axios.post(api+"/User/auth",{tokenData:tokenData},{headers});
-        console.log(res);
         if(res.data.status=="ok"){
             return res.data.decoded;
         }
@@ -140,6 +139,17 @@ export const getRoom = async()=>{
 export const editRound = async(data)=>{
     try{
         const res = await Axios.put(api+"/Show/editRound",{data:data},{headers});
+        if(res.data.status=="ok"){
+            return res.data.message;
+        }
+        return res.data.status;
+    }catch(err){
+        return "something wrong"
+    }
+}
+export const editAnimal = async(data)=>{
+    try{
+        const res = await Axios.put(api+"/Animal/editAnimal",{data:data},{headers});
         if(res.data.status=="ok"){
             return res.data.message;
         }

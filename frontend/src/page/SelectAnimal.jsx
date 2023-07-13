@@ -22,6 +22,7 @@ export default function SelectAnimal(){
     useEffect(()=>{
         if(localStorage.getItem("User")){
             auth().then((res)=>{
+                if(res=="err" || res=="something wrong") return navigate("/Login")
                 if(res!='err'){
                     if(res.role==1){
                         return navigate("/Editround")
@@ -29,12 +30,13 @@ export default function SelectAnimal(){
                 
                 }
             })
-            
             getAnimal().then((res)=>{
+                if(res=="err" || res=="something wrong") return
                 setAnimal(res)
                 setAnimalsearch(res)
             })
             getRound().then((res)=>{
+                if(res=="err" || res=="something wrong") return
                 setRound(res)
             })
         }else{
@@ -43,7 +45,7 @@ export default function SelectAnimal(){
     },[])
     function onChange(evt){
         let word = evt.target.value;
-        setAnimalsearch(animal.filter((animal) => animal.animal_name.startsWith(word)));
+        setAnimalsearch(animal.filter((animal) => animal.Animal_Name.startsWith(word)));
     }
 
     function onClickHandle(data){

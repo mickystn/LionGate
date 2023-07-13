@@ -30,13 +30,12 @@ export default function History(){
     useEffect(()=>{
         if(localStorage.getItem("User")){
             auth().then((res)=>{
-                if(res=='err'){
-                    return navigate("/Login")
-                }
+                if(res=="err" || res=="something wrong") return navigate("/Login")
                 if(res.role==1){
                     return navigate("/Editround")
                 }
                 getBooking(res.id).then((resGetbooking)=>{
+                    if(res=="err" || res=="something wrong") return 
                     setData(resGetbooking)
                 })
             })

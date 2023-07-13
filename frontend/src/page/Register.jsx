@@ -35,7 +35,7 @@ export default function Register(){
     useEffect(()=>{
         if(localStorage.getItem("User")){
             auth().then((res)=>{
-                console.log(res);
+                if(res=="err" || res=="something wrong") return navigate("/Login")
                 if(res!='err'){
                     if(res.role==0){
                         return navigate("/SelectAnimal")
