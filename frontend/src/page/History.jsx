@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Table } from 'antd';
 import Navbaruser from "../component/Navbaruser";
 import '../style/History.css'
-
+import ReactLoading from 'react-loading';
 const columns = [
     {
       title: 'Round ID',
@@ -27,6 +27,7 @@ const columns = [
 export default function History(){
     const navigate = useNavigate();
     const [data,setData]=useState();
+    const [loading,setLoading] = useState(false);
     useEffect(()=>{
         if(localStorage.getItem("User")){
             auth().then((res)=>{
@@ -34,9 +35,12 @@ export default function History(){
                 if(res.role==1){
                     return navigate("/Editround")
                 }
+                setLoading(true)
                 getBooking(res.id).then((resGetbooking)=>{
                     if(res=="err" || res=="something wrong") return 
                     setData(resGetbooking)
+                }).finally(()=>{
+                    setLoading(false)
                 })
             })
             return
@@ -47,10 +51,18 @@ export default function History(){
     return (
         <div className="history_contianer">
             <Navbaruser/>
-            <div className="history_content">
-                <Table columns={columns} dataSource={data} className="table"/>  
-            </div>
-                      
+            {
+                    loading?
+                    <div className="center">
+                        <ReactLoading type="spin" color="black" height={150} width={150}  />
+                    </div>
+                    :
+                    <div className="history_content">
+                            <div>
+                                <Table columns={columns} dataSource={data} className="table"/>  
+                            </div>
+                    </div>
+            }    
         </div>
         
     )

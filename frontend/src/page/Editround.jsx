@@ -9,6 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import {Table } from 'antd';
 import {Modal } from 'antd';
+import ReactLoading from 'react-loading';
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} {...props} />;
 });
@@ -22,7 +23,7 @@ export default function Editround(){
     const [open2, setOpen2] = useState(false);
     const [round,setRound] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [loading,setLoading] = useState(false);
     const [room,setRoom] = useState();
     const [data,setData] = useState();
 
@@ -108,6 +109,7 @@ export default function Editround(){
                     return navigate("/SelectAnimal")
                 }
             })
+            setLoading(true)
             getRoundedit().then((res)=>{
                 if(res=="err" || res=="something wrong") return
                 setRound(res)
@@ -115,6 +117,9 @@ export default function Editround(){
             getRoom().then((res)=>{
                 if(res=="err" || res=="something wrong") return
                 setRoom(res)
+            })
+            .finally(()=>{
+                setLoading(false)
             })
         }else{
             return navigate("/Login")
@@ -124,41 +129,49 @@ export default function Editround(){
         <div className="Editround_container">
             <Navbaradmin/>
             <div className="Editround_content">
-                <Table columns={columns} dataSource={round} style={{width:'100%'}} />;
-                <Modal title="Edit" open={isModalOpen} footer={null}>
-                    <Form onFinish={onFinish}>
-                        <Form.Item name="select_time" rules={[{required: true}]}>
-                            <TimePicker format="HH:mm" style={{width:'100%'}}/>
-                        </Form.Item>
-                        <Form.Item name="room_id" rules={[{required: true}]}>
-                            <Select placeholder="Select room">
-                                {room?.map((val,index)=>{
-                                    return (
-                                        <Option key={index} value={val.Room_ID}>{val.Room_Name}</Option>
-                                    )
-                                })}
-                            </Select>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="default" htmlType="submit">
-                                Submit
-                            </Button>
-                            <Button type="default" onClick={handleCancel} style={{marginLeft:'10px'}}>
-                                Cancel
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </Modal>
-                <Snackbar open={open} anchorOrigin={{horizontal: 'center',vertical: 'top'}} autoHideDuration={3000} onClose={handleClose}>
-                    <Alert onClose={handleClose}  severity="success" sx={{ width: '100%' ,color:'#FFF' }}>
-                        {msg}
-                    </Alert>
-                </Snackbar>
-                <Snackbar open={open2} anchorOrigin={{horizontal: 'center',vertical: 'top'}} autoHideDuration={3000} onClose={handleClose}>
-                    <Alert onClose={handleClose}  severity="error" sx={{ width: '100%' ,color:'#FFF' }}>
-                        {msg2}
-                    </Alert>
-                </Snackbar>
+                {loading?
+                     <div className="center">
+                        <ReactLoading type="spin" color="black" height={150} width={150}  />
+                    </div>
+                :    
+                    <div>
+                        <Table columns={columns} dataSource={round} style={{width:'100%'}} />
+                        <Modal title="Edit" open={isModalOpen} footer={null}>
+                            <Form onFinish={onFinish}>
+                                <Form.Item name="select_time" rules={[{required: true}]}>
+                                    <TimePicker format="HH:mm" style={{width:'100%'}}/>
+                                </Form.Item>
+                                <Form.Item name="room_id" rules={[{required: true}]}>
+                                    <Select placeholder="Select room">
+                                        {room?.map((val,index)=>{
+                                            return (
+                                                <Option key={index} value={val.Room_ID}>{val.Room_Name}</Option>
+                                            )
+                                        })}
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button type="default" htmlType="submit">
+                                        Submit
+                                    </Button>
+                                    <Button type="default" onClick={handleCancel} style={{marginLeft:'10px'}}>
+                                        Cancel
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        </Modal>
+                        <Snackbar open={open} anchorOrigin={{horizontal: 'center',vertical: 'top'}} autoHideDuration={3000} onClose={handleClose}>
+                            <Alert onClose={handleClose}  severity="success" sx={{ width: '100%' ,color:'#FFF' }}>
+                                {msg}
+                            </Alert>
+                        </Snackbar>
+                        <Snackbar open={open2} anchorOrigin={{horizontal: 'center',vertical: 'top'}} autoHideDuration={3000} onClose={handleClose}>
+                            <Alert onClose={handleClose}  severity="error" sx={{ width: '100%' ,color:'#FFF' }}>
+                                {msg2}
+                            </Alert>
+                        </Snackbar>
+                    </div>
+                }
             </div>
         </div>
     )

@@ -9,7 +9,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import ReactLoading from 'react-loading';
 import {getAnimal,getRound,auth} from '../service/api'
 
 export default function SelectAnimal(){
@@ -18,7 +18,7 @@ export default function SelectAnimal(){
     const [animalsearch,setAnimalsearch]=useState();
 
     const [round,setRound]=useState();
-
+    const [loading,setLoading] = useState(false);
     useEffect(()=>{
         if(localStorage.getItem("User")){
             auth().then((res)=>{
@@ -30,6 +30,7 @@ export default function SelectAnimal(){
                 
                 }
             })
+            setLoading(true)
             getAnimal().then((res)=>{
                 if(res=="err" || res=="something wrong") return
                 setAnimal(res)
@@ -38,6 +39,8 @@ export default function SelectAnimal(){
             getRound().then((res)=>{
                 if(res=="err" || res=="something wrong") return
                 setRound(res)
+            }).finally(()=>{
+                setLoading(false)
             })
         }else{
             return navigate("/Login")
@@ -59,35 +62,43 @@ export default function SelectAnimal(){
             <div className="SA_content">
                 <h1 className="txt-title">Animal</h1>
                 <div className="SA_subcontent">
-                    <Input  placeholder="Search"prefix={<SearchOutlined />} onChange={onChange} />
-                    {animalsearch?.map((val1,index)=>{
-                        return (
-                            <Accordion key={index} style={{margin:0}}>
-                                <AccordionSummary expandIcon={<ExpandMoreIcon />} >
-                                    <div className="acc-detail">
-                                        <h1 className="txt1-acc" >{val1.Animal_Name}</h1>
-                                        <div style={{display:'flex' ,gap:"10px"}}>
-                                            <h1 className="txt2-acc">{val1.Animal_Type}</h1>
-                                            <h1 className="txt2-acc">{val1.Animal_Species}</h1>
+                { loading? 
+                    <div className="center">
+                        <ReactLoading type="spin" color="black" height={150} width={150}  />
+                    </div>
+                :
+                    <div>
+                        <Input  placeholder="Search"prefix={<SearchOutlined />} onChange={onChange} />
+                        {animalsearch?.map((val1,index)=>{
+                            return (
+                                <Accordion key={index} style={{margin:0}}>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} >
+                                        <div className="acc-detail">
+                                            <h1 className="txt1-acc" >{val1.Animal_Name}</h1>
+                                            <div style={{display:'flex' ,gap:"10px"}}>
+                                                <h1 className="txt2-acc">{val1.Animal_Type}</h1>
+                                                <h1 className="txt2-acc">{val1.Animal_Species}</h1>
+                                            </div>
                                         </div>
-                                    </div>
-                                </AccordionSummary>
-                                <AccordionDetails style={{display:'flex'}}>
-                                    {round?.map((val2,index)=>{
-                                        if(val1.Animal_ID==val2.Animal_ID){
-                                            return (
-                                                <button className="btn-time" key={index} onClick={()=>{onClickHandle(val2)}}>
-                                                    {val2.Showtime.slice(0,5)}
-                                                </button>
-                                            )
-                                        }
-                                    })}
-                                </AccordionDetails>
-                            </Accordion>
-                        )
-                    })}
-                    
+                                    </AccordionSummary>
+                                    <AccordionDetails style={{display:'flex'}}>
+                                        {round?.map((val2,index)=>{
+                                            if(val1.Animal_ID==val2.Animal_ID){
+                                                return (
+                                                    <button className="btn-time" key={index} onClick={()=>{onClickHandle(val2)}}>
+                                                        {val2.Showtime.slice(0,5)}
+                                                    </button>
+                                                )
+                                            }
+                                        })}
+                                    </AccordionDetails>
+                                </Accordion>
+                            )
+                        })}
+                    </div>
+                }   
                 </div>
+                
             </div>
         </div>
     )

@@ -12,7 +12,9 @@
     margin-top: 100px;
     gap:10px;
 }
-
+.Editanimal_container .center{
+    margin-top:7rem;
+}
 @media (max-width:  640px) {
     .SA_content{
         max-width: 90%;

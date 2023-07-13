@@ -1,4 +1,13 @@
 
+.history_contianer{
+    display: flex;
+    height: 100vh;
+    margin: 0 auto;
+}
+.history_contianer .center{
+    margin-top:6rem;
+}
+
 @media (max-width:640px) {
     .table{
         margin-top:5rem;

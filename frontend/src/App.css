@@ -3,3 +3,8 @@
   max-width: 90rem;
   padding: 0 4rem;
 }
+.center{
+  display:flex;
+  margin: 0 auto;
+  margin-top:2rem;
+}
