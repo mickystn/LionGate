@@ -64,7 +64,6 @@ export default function SelectAnimal(){
                         return (
                             <Accordion key={index} style={{margin:0}}>
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />} >
-                                    <img src={val1.Animal_Path} className="img-acc"></img>
                                     <div className="acc-detail">
                                         <h1 className="txt1-acc" >{val1.Animal_Name}</h1>
                                         <div style={{display:'flex' ,gap:"10px"}}>

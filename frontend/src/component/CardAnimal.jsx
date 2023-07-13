@@ -6,7 +6,6 @@ import '../style/CardAnimal.css'
 export default function CardAnimal(props){
     return (
         <div className="CardAnimal">
-            {props.data.img}
             <div className="CardAnimal-content">
                 <h1 className='txt-cardAnimal'>
                     Animal : {props.data.name}
