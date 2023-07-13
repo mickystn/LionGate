@@ -1,6 +1,6 @@
 
 import Axios from 'axios';
-const api = "http://localhost:3001"
+const api = "https://liongate-backend.vercel.app"
 const headers = { 'Authorization': 'Bearer liongate'}; // 
 
 export const register = async (data)=>{
