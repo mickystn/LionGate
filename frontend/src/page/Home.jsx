@@ -32,9 +32,9 @@ export default function Home(){
             
             <div className="Card-container">
                 <div className='Card-content'>
-                    <Card icon={<PetsIcon  fontSize='large' />} locate="/Animal" name="Animal"/>
-                    <Card icon={<AccessTimeIcon fontSize='large'/>} locate="/Booking"  name="Hours"/>
-                    <Card icon={<ConfirmationNumberIcon fontSize='large'/>}  locate="/Price" name="Ticket&Prices"/>
+                    <Card icon={<PetsIcon  fontSize='large' />} name="Animal"/>
+                    <Card icon={<AccessTimeIcon fontSize='large'/>}   name="Hours"/>
+                    <Card icon={<ConfirmationNumberIcon fontSize='large'/>}  name="Ticket&Prices"/>
                 </div>
             </div>
         </div>
