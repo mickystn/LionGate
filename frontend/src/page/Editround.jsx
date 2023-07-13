@@ -1,6 +1,6 @@
 
 import { useEffect,useState,forwardRef } from "react"
-import { auth ,getRoundedit,getRoom,editRound} from "../service/api"
+import { auth ,getRoundedit,getAnimal,editRound} from "../service/api"
 import { useNavigate } from "react-router-dom";
 import Navbaradmin from "../component/Navbaradmin";
 import { TimePicker, Form,Button, Select } from 'antd';
@@ -24,7 +24,7 @@ export default function Editround(){
     const [round,setRound] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading,setLoading] = useState(false);
-    const [room,setRoom] = useState();
+    const [animal,setAnimal] = useState();
     const [data,setData] = useState();
 
     const columns = [
@@ -76,13 +76,13 @@ export default function Editround(){
     };
     const onFinish = (values) => {
         let newTime = formatTime(values.select_time.$d);
-        let newRoomID = values.room_id;
-
+        let newAnimalID = values.Animal_ID;
         const tempData = {
             Round_ID:data.Round_ID,
             Showtime:newTime,
-            Room_ID:newRoomID
+            Animal_ID:newAnimalID
         }
+        console.log(tempData);
         editRound(tempData).then((res)=>{
             if(res!="err" && res!="something wrong"){
                 setMsg("Edit Complete")
@@ -114,9 +114,9 @@ export default function Editround(){
                 if(res=="err" || res=="something wrong") return
                 setRound(res)
             })
-            getRoom().then((res)=>{
+            getAnimal().then((res)=>{
                 if(res=="err" || res=="something wrong") return
-                setRoom(res)
+                setAnimal(res)
             })
             .finally(()=>{
                 setLoading(false)
@@ -141,11 +141,11 @@ export default function Editround(){
                                 <Form.Item name="select_time" rules={[{required: true}]}>
                                     <TimePicker format="HH:mm" style={{width:'100%'}}/>
                                 </Form.Item>
-                                <Form.Item name="room_id" rules={[{required: true}]}>
-                                    <Select placeholder="Select room">
-                                        {room?.map((val,index)=>{
+                                <Form.Item name="Animal_ID" rules={[{required: true}]}>
+                                    <Select placeholder="Select Animal">
+                                        {animal?.map((val,index)=>{
                                             return (
-                                                <Option key={index} value={val.Room_ID}>{val.Room_Name}</Option>
+                                                <Option key={index} value={val.Animal_ID}>{val.Animal_Name}</Option>
                                             )
                                         })}
                                     </Select>

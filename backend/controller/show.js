@@ -37,12 +37,12 @@ exports.updateSeat=(req,res)=>{
     }
 }
 exports.createRound=(req,res)=>{
-    // [animal_id,room_id,showtime]
-    //let data = [3,3,'19:00:00'] 
+    // // [animal_id,room_id,showtime]
+    // let data = [3,3,"19:00:00"] 
 
     // let sql = "SELECT Capacity FROM rooms WHERE Room_ID=?"
 
-    // let sqlInsertSeat = "INSERT INTO `seats`(`Room_ID`, `Round_ID`, `Seat_Name`, `Is_Reserved`) VALUES (?,?,?,?)"
+    // let sqlInsertSeat = "INSERT INTO `seats`(`Round_ID`, `Seat_Name`, `isReserved`) VALUES (?,?,?)"
 
     // let sqlInsertRound = "INSERT INTO `rounds`(`Animal_ID`, `Room_ID`, `Showtime`) VALUES (?,?,?)"
 
@@ -56,8 +56,9 @@ exports.createRound=(req,res)=>{
     //         if(err) return res.json({status:'error',message:err})
 
     //         let cap = result[0].Capacity;
+            
     //         for(let i=1;i<=cap;i++){
-    //             db.query(sqlInsertSeat,[room_id,round_id,i,0],(err,result)=>{
+    //             db.query(sqlInsertSeat,[round_id,i,0],(err,result)=>{
     //                 if(err) return res.json({status:'error',message:err})
     //             })
     //         }    
@@ -122,8 +123,8 @@ exports.getRoom = (req,res)=>{
 exports.editRound=(req,res)=>{
     try{
         let data = req.body.data;
-        let sql="UPDATE `rounds` SET `Room_ID`=?,`Showtime`=? WHERE Round_ID=?"
-        db.query(sql,[data.Room_ID,data.Showtime,data.Round_ID],(err,result)=>{
+        let sql="UPDATE `rounds` SET `Animal_ID`=?,`Showtime`=? WHERE Round_ID=?"
+        db.query(sql,[data.Animal_ID,data.Showtime,data.Round_ID],(err,result)=>{
             if(err) return res.json({status:'error',message:err})
             res.json({status:'ok',message:result});
         })
